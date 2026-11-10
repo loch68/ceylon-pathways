@@ -8,26 +8,31 @@
   <title>Ceylon Pathways - Private Journeys Through Sri Lanka's Hill Country</title>
   <meta name="description" content="Private van journeys from Nuwara Eliya to Horton Plains, World's End, Ella and the tea country beyond. One local host, a comfortable van and a fixed price agreed before you go." />
 
-  <link rel="canonical" href="https://ceylon-pathways.vercel.app/" />
+  <link rel="canonical" href="https://ceylonpathways.vercel.app/" />
 
   <meta property="og:title" content="Ceylon Pathways - Private Journeys Through Sri Lanka's Hill Country" />
-  <meta property="og:description" content="Private van journeys from Nuwara Eliya to Horton Plains, World's End, Ella and the tea country beyond." />
+  <meta property="og:description" content="Private van journeys from Nuwara Eliya to Horton Plains, World's End, Ella and the tea country beyond. One local host, a comfortable van and a fixed price agreed before you go." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ceylon Pathways" />
   <meta property="og:locale" content="en_LK" />
-  <meta property="og:url" content="https://ceylon-pathways.vercel.app/" />
-  <meta property="og:image" content="https://ceylon-pathways.vercel.app/assets/img/og-cover.jpg" />
+  <meta property="og:url" content="https://ceylonpathways.vercel.app/" />
+  <meta property="og:image" content="https://ceylonpathways.vercel.app/assets/img/og-share.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Sunrise mist over the highlands of Horton Plains, Sri Lanka" />
+  <meta property="og:image:alt" content="The Ceylon Pathways logo on a cream card beside sunrise mist over the grasslands of Horton Plains, Sri Lanka" />
 
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Ceylon Pathways - Private Journeys Through Sri Lanka" />
-  <meta name="twitter:description" content="Private van journeys from Nuwara Eliya to Horton Plains, World's End, Ella and beyond." />
-  <meta name="twitter:image" content="https://ceylon-pathways.vercel.app/assets/img/og-cover.jpg" />
+  <meta name="twitter:title" content="Ceylon Pathways - Private Journeys Through Sri Lanka's Hill Country" />
+  <meta name="twitter:description" content="Private van journeys from Nuwara Eliya to Horton Plains, World's End, Ella and the tea country beyond. One local host, a comfortable van and a fixed price agreed before you go." />
+  <meta name="twitter:image" content="https://ceylonpathways.vercel.app/assets/img/og-share.jpg" />
+  <meta name="twitter:image:alt" content="The Ceylon Pathways logo on a cream card beside sunrise mist over the grasslands of Horton Plains, Sri Lanka" />
 
-  <link rel="icon" href="assets/img/mark-96.png" type="image/png" />
-  <link rel="apple-touch-icon" href="assets/img/mark-180.png" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
 
   <link rel="preload" href="assets/fonts/fraunces-normal.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preload" href="assets/fonts/fraunces-italic.woff2" as="font" type="font/woff2" crossorigin />
@@ -39,22 +44,41 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": "https://ceylon-pathways.vercel.app/#business",
-    "name": "Ceylon Pathways",
-    "description": "Private van tours and fixed-price sightseeing experiences in Nuwara Eliya and across Sri Lanka's hill country.",
-    "areaServed": "Sri Lanka",
-    "address": {
-      "@type": "PostalAddress",
-      "addressLocality": "Nuwara Eliya",
-      "addressCountry": "LK"
-    },
-    "telephone": "+94 74 048 9900",
-    "email": "nimanthausiru@gmail.com",
-    "url": "https://ceylon-pathways.vercel.app/",
-    "image": "https://ceylon-pathways.vercel.app/assets/img/og-cover.jpg",
-    "sameAs": [
-      "https://www.tripadvisor.com/Attraction_Review-g608524-d34197130-Reviews-Ceylon_Pathways-Nuwara_Eliya_Central_Province.html"
+    "@graph": [
+      {
+        "@type": "TravelAgency",
+        "@id": "https://ceylonpathways.vercel.app/#business",
+        "name": "Ceylon Pathways",
+        "description": "Private van tours and fixed-price sightseeing experiences in Nuwara Eliya and across Sri Lanka's hill country.",
+        "url": "https://ceylonpathways.vercel.app/",
+        "image": "https://ceylonpathways.vercel.app/assets/img/og-share.jpg",
+        "logo": "https://ceylonpathways.vercel.app/assets/img/icon-512.png",
+        "telephone": "+94 74 048 9900",
+        "email": "nimanthausiru@gmail.com",
+        "areaServed": {
+          "@type": "Country",
+          "name": "Sri Lanka"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Nuwara Eliya",
+          "addressRegion": "Central Province",
+          "addressCountry": "LK"
+        },
+        "sameAs": [
+          "https://www.tripadvisor.com/Attraction_Review-g608524-d34197130-Reviews-Ceylon_Pathways-Nuwara_Eliya_Central_Province.html"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://ceylonpathways.vercel.app/#website",
+        "url": "https://ceylonpathways.vercel.app/",
+        "name": "Ceylon Pathways",
+        "inLanguage": "en",
+        "publisher": {
+          "@id": "https://ceylonpathways.vercel.app/#business"
+        }
+      }
     ]
   }
   </script>

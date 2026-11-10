@@ -29,9 +29,13 @@ Responsive WebP variants are produced from the originals with `cwebp`
 - `worldsend`, `mountainview`, `sunset`, `horton-lake`, `waterfall`,
   `waterfall-2`, `ninearch`, `teafactory`, `van` - section imagery
 - `guest-1`…`guest-6-{480,800}.webp` - guest moments rail and gallery
-- `mark-96.png`, `mark-180.png` - logo emblem cropped from `logobgr.png`
-  (transparent), used for the header, footer and favicon
-- `og-cover.jpg` - 1200×630 social sharing card
+- `mark-96.png`, `mark.png` - logo emblem cropped from `logobgr.png`
+  (transparent), used for the header, the footer and as the source of the icons
+- `favicon-16.png`, `favicon-32.png`, `apple-touch-icon.png` (180px),
+  `icon-192.png`, `icon-512.png` - icon set built from `mark.png` on the site's
+  paper colour, so the transparent sky in the emblem stays consistent
+- `og-share.jpg` - 1200×630 branded social sharing card: the Horton Plains
+  sunrise photograph with the logo on a cream card
 
 The HEIC originals carry EXIF rotation, which `cwebp` ignores. Orientation is
 flattened before conversion (the Nine Arch file in particular) so the WebP

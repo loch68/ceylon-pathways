@@ -1,0 +1,23 @@
+{
+  "name": "Ceylon Pathways",
+  "short_name": "Ceylon Pathways",
+  "description": "Private van journeys through Sri Lanka's hill country, based in Nuwara Eliya.",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#fbf7ee",
+  "theme_color": "#0a251e",
+  "icons": [
+    {
+      "src": "/assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
