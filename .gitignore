@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Local verification screenshots (root-level PNGs are never site assets)
+/*.png
+
+# Editor / tooling
+.vscode/
+.idea/

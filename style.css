@@ -1,5 +1,5 @@
 /* ============================================================
-   CEYLON PATHWAYS — Hill country, unhurried.
+   CEYLON PATHWAYS - Hill country, unhurried.
    Type: Fraunces (display) + Manrope (text), served locally.
    ============================================================ */
 
@@ -81,6 +81,57 @@ body.menu-open,
 body.lb-open { overflow: hidden; }
 
 h1, h2, h3, h4, p, figure, blockquote, dl, dd { margin: 0; }
+
+/* ==== Loader ==== */
+.loader {
+  position: fixed;
+  inset: 0;
+  background: var(--brand-ivory);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  color: var(--brand-primary);
+}
+.loader[hidden] {
+  opacity: 0;
+  visibility: hidden;
+}
+.loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+}
+.loader__logo {
+  width: 64px;
+  height: 64px;
+  filter: var(--gold);
+}
+.loader__title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.loader__line {
+  width: 48px;
+  height: 2px;
+  background: var(--brand-primary);
+  animation: loaderLine 2s ease-in-out infinite;
+}
+@keyframes loaderLine {
+  0%, 100% { transform: translateX(-50%); }
+  50% { transform: translateX(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loader__line {
+    animation: none;
+  }
+}
 ul, ol { margin: 0; padding: 0; list-style: none; }
 img, svg { display: block; }
 img { max-width: 100%; height: auto; }
@@ -812,6 +863,7 @@ body.menu-open .btn--header { background: transparent; color: transparent; }
   aspect-ratio: 4 / 5;
   max-height: 620px;
 }
+.story__media-frame picture { display: block; height: 100%; }
 .story__media-frame img {
   width: 100%;
   height: 100%;
@@ -1433,17 +1485,18 @@ body.menu-open .btn--header { background: transparent; color: transparent; }
 .why__media {
   position: relative;
   z-index: 1;
-  width: min(66%, 270px);
+  width: min(100%, 320px);
   margin: 0;
   justify-self: start;
 }
 .why__media img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  height: auto;
+  aspect-ratio: 4 / 3;
   object-fit: cover;
-  object-position: 50% 38%;
   border-radius: 150px 150px 2px 2px;
 }
+.why__media .why__van { object-position: 50% 50%; }
 .why__media .why__guest { object-position: 50% 56%; }
 .why__media figcaption {
   margin-top: 0.8rem;
@@ -1526,7 +1579,7 @@ body.menu-open .btn--header { background: transparent; color: transparent; }
   .why__features { grid-template-columns: 1fr 1fr; gap: 2.4rem 2.2rem; }
 }
 @media (min-width: 900px) {
-  .why__top { grid-template-columns: minmax(0, 1fr) 270px; gap: 4rem; }
+  .why__top { grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 4rem; align-items: center; }
   .why__media { width: 100%; justify-self: end; }
   .why__lede { font-size: 15px; }
 }
@@ -1935,15 +1988,26 @@ body.menu-open .btn--header { background: transparent; color: transparent; }
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.7rem 1.5rem;
+  gap: 0.9rem 1.5rem;
   margin-top: clamp(2.5rem, 5vw, 4rem);
-  padding: 1.4rem 0;
+  padding: 1.6rem 0;
   border-top: 1px solid rgba(242, 233, 217, 0.12);
-  font-size: 9.5px;
-  letter-spacing: 0.03em;
-  color: rgba(242, 233, 217, 0.44);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: rgba(242, 233, 217, 0.58);
 }
-.footer__credit strong { color: rgba(242, 233, 217, 0.66); font-weight: 600; }
+.footer__photography-note {
+  order: 1;
+  margin-right: auto;
+  max-width: 62ch;
+  font-size: 12.5px;
+  color: rgba(242, 233, 217, 0.66);
+  line-height: 1.65;
+}
+.footer__credit {
+  font-size: 11.5px;
+  color: rgba(242, 233, 217, 0.6);
+}
 .footer__top-link {
   display: inline-flex;
   align-items: center;
@@ -2120,6 +2184,72 @@ body.lb-open .wa-float { opacity: 0; pointer-events: none; }
     clip-path: none !important;
   }
 }
+
+/* ============================================================
+   LEGAL PAGE
+   ============================================================ */
+
+.legal-page { background: var(--paper); }
+
+/* The fixed site header sits over a dark hero on the home page. On the light
+   legal page it keeps its scrolled appearance from the very top so the nav,
+   phone number and WhatsApp pill stay legible on ivory. */
+.legal-page .site-header {
+  color: var(--forest);
+  background: rgba(251, 247, 238, 0.93);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 1px 0 rgba(20, 56, 45, 0.1), 0 14px 40px rgba(10, 37, 30, 0.06);
+}
+.legal-page .site-header .btn--header {
+  color: var(--cream);
+  background: var(--forest);
+}
+
+.legal-hero {
+  padding-block: calc(var(--header-h) + clamp(2.5rem, 5vw, 4rem)) clamp(1rem, 2vw, 1.75rem);
+}
+.legal-hero .display { max-width: 20ch; }
+.legal__updated {
+  margin-top: 1.15rem;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.legal-section { padding-bottom: clamp(3.5rem, 6vw, 5.5rem); }
+.legal__body { max-width: 46rem; }
+.legal__body h2 {
+  margin-top: 2.6rem;
+  margin-bottom: 0.6rem;
+  font-family: var(--display);
+  font-size: 1.45rem;
+  font-weight: 380;
+  letter-spacing: -0.015em;
+  color: var(--forest);
+}
+.legal__body p {
+  color: var(--muted);
+  font-size: 14.5px;
+  line-height: 1.75;
+}
+.legal__body p + p { margin-top: 0.9rem; }
+.legal__body a {
+  color: var(--clay);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.legal__body a:hover { color: var(--forest); }
+.legal__back { margin-top: 3rem; }
+
+.footer__legal {
+  font-size: 11.5px;
+  color: rgba(242, 233, 217, 0.6);
+  transition: color 0.25s var(--ease);
+}
+.footer__legal:hover { color: var(--gold-light); }
 
 /* Fine adjustments for very small screens */
 @media (max-width: 359px) {

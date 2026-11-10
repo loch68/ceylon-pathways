@@ -1,0 +1,16 @@
+# Source photographs and brand artwork.
+# These are kept in the repository as originals, but nothing on the site
+# references them - the browser only loads assets/img/* and assets/fonts/*.
+# Excluding them keeps ~20MB of unreferenced files (including HEIC originals
+# that carry camera metadata) off the public CDN.
+assets/*.HEIC
+assets/*.JPG
+assets/*.jpg
+assets/slide*.svg
+assets/logo*.png
+assets/README.md
+assets/.DS_Store
+.DS_Store
+demo-*.png
+.vscode
+.idea

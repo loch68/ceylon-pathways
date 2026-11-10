@@ -1,5 +1,5 @@
 /* ============================================================
-   CEYLON PATHWAYS — interactions
+   CEYLON PATHWAYS - interactions
    Vanilla JS, no dependencies. Motion respects reduced-motion.
    ============================================================ */
 
@@ -26,13 +26,8 @@
 
     header.classList.toggle('is-scrolled', y > 28);
 
-    if (body.classList.contains('menu-open') || header.contains(document.activeElement)) {
-      header.classList.remove('is-hidden');
-    } else if (y > 480 && y > lastScroll + 6) {
-      header.classList.add('is-hidden');
-    } else if (y < lastScroll - 6 || y < 120) {
-      header.classList.remove('is-hidden');
-    }
+    // Keep header visible at all times - remove hide-on-scroll behavior
+    header.classList.remove('is-hidden');
 
     const wa = document.querySelector('[data-wa-float]');
     if (wa) wa.classList.toggle('is-visible', y > 620);
@@ -96,7 +91,14 @@
     menuToggle.setAttribute('aria-label', 'Open menu');
     body.classList.remove('menu-open');
     if (restoreFocus) {
-      const target = lastFocused && lastFocused.focus ? lastFocused : menuToggle;
+      // Fall back to the toggle when the opener was never focusable (a click
+      // does not always focus a button, e.g. in Safari) so keyboard users are
+      // never dropped back onto <body>.
+      const canRestore =
+        lastFocused &&
+        lastFocused !== document.body &&
+        typeof lastFocused.focus === 'function';
+      const target = canRestore ? lastFocused : menuToggle;
       target.focus({ preventScroll: true });
     }
   };
@@ -161,7 +163,28 @@
       },
       { rootMargin: '0px 0px -7% 0px', threshold: 0.08 }
     );
-    revealEls.forEach((el) => revealObserver.observe(el));
+    // Clip-path reveals are clipped to zero height until they open, so their
+    // intersection ratio can never reach a fractional threshold. Observing them
+    // at 0.08 means they would never reveal at all - use threshold 0 for those.
+    const mediaRevealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-in');
+            mediaRevealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -7% 0px', threshold: 0 }
+    );
+
+    revealEls.forEach((el) => {
+      if (el.classList.contains('media-reveal')) {
+        mediaRevealObserver.observe(el);
+      } else {
+        revealObserver.observe(el);
+      }
+    });
   }
 
   /* ---------- Scrollspy ---------- */
@@ -398,6 +421,107 @@
     });
   }
 
+  /* ==== Loader ==== */
+  const loader = document.querySelector('.loader');
+  let resourcesReady = false;
+  let loaderTimeoutId = null;
+
+  // Show loader immediately if the element exists
+  if (loader) {
+    loader.hidden = false;
+  }
+
+  // Hide the loader once critical resources are ready.
+  // Safe to call multiple times: the resourcesReady guard prevents re-entry.
+  const hideLoader = () => {
+    if (!resourcesReady) {
+      resourcesReady = true;
+      if (loaderTimeoutId) {
+        clearTimeout(loaderTimeoutId);
+        loaderTimeoutId = null;
+      }
+      if (loader) {
+        loader.hidden = true;
+      }
+    }
+  };
+
+  // Wait for the document to be interactive or already loaded.
+  // This handles both: (1) script runs while still parsing, and (2) script runs
+  // after DOMContentLoaded already fired.
+  const runWhenReady = () => {
+    if (loader) {
+      // Set a timeout fallback so the loader can never remain visible indefinitely.
+      // 5 seconds is generous for local fonts + a decoded hero image.
+      loaderTimeoutId = setTimeout(() => {
+        hideLoader();
+      }, 5000);
+
+      // Critical hero image: the large above-the-fold hero, NOT a lazy gallery image.
+      // The site's main hero is hero-horton (preloaded with fetchpriority="high").
+      const heroImg = document.querySelector('img[src*="hero-horton"]');
+
+      // Fonts: use the Font Loading API when available, else fall back to a
+      // computed-style check. NOTE: document.fonts.ready is a Promise, not a
+      // function, so it must be feature-detected via `.then`.
+      const fontSet = document.fonts;
+      const hasFontLoadingApi = !!(
+        fontSet && fontSet.ready && typeof fontSet.ready.then === 'function'
+      );
+
+      const fontsReady = hasFontLoadingApi
+        ? fontSet.ready.then(
+            () => fontSet.check('12px "Fraunces"') && fontSet.check('12px "Manrope"'),
+            () => true // font load failure is not fatal - release the page
+          )
+        : Promise.resolve((() => {
+            const frauncesEl = document.querySelector('.display, .serif, [class*="fraunces"]');
+            const manropeEl = document.querySelector('body, p, .sans, [class*="manrope"]');
+            const checks = [];
+            if (frauncesEl) checks.push(window.getComputedStyle(frauncesEl).fontFamily.toLowerCase().includes('fraunces'));
+            if (manropeEl) checks.push(window.getComputedStyle(manropeEl).fontFamily.toLowerCase().includes('manrope'));
+            return checks.length > 0 ? checks.every(Boolean) : true;
+          })());
+
+      const heroReady = (() => {
+        if (!heroImg) return Promise.resolve(true);
+        if (typeof heroImg.decode === 'function') {
+          return heroImg.decode().then(
+            () => true,
+            () => true // image decode failure is not fatal - fall back to natural dimensions
+          );
+        }
+        return Promise.resolve(heroImg.naturalWidth > 0 && heroImg.naturalHeight > 0);
+      })();
+
+      Promise.all([fontsReady, heroReady]).then(
+        () => hideLoader(),
+        () => hideLoader() // any rejection (font load failure, decode error) still releases the page
+      );
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runWhenReady, { once: true });
+  } else {
+    // DOMContentLoaded already fired - run immediately
+    runWhenReady();
+  }
+
+  // If reduced-motion is requested, dismiss the loader immediately rather than
+  // sitting on an animated screen.
+  if (loader && prefersReduced()) {
+    hideLoader();
+  }
+
+  // If the user enables reduced-motion later, dismiss the loader immediately.
+  if (reduceMotion.addEventListener) {
+    reduceMotion.addEventListener('change', () => {
+      if (reduceMotion.matches && loader && !loader.hidden) {
+        hideLoader();
+      }
+    });
+  }
   /* Everything above is ready; paint the correct header state. */
   updateHeader();
 })();
